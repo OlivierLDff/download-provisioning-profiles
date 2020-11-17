@@ -33,14 +33,18 @@ async function run(): Promise<void> {
 
       function profileToExtension(type)
       {
-          if(type === 'MAC_APP_DEVELOPMENT' ||
-              type === 'MAC_APP_STORE' ||
-              type === 'MAC_APP_DIRECT')
-            return 'provisionprofile'
-          return 'mobileprovision'
+        core.info(`type : ${type}`)
+        if(type === 'MAC_APP_DEVELOPMENT' ||
+            type === 'MAC_APP_STORE' ||
+            type === 'MAC_APP_DIRECT')
+        {
+          return 'provisionprofile'
+        }
+        return 'mobileprovision'
       }
 
       const profileExtension = profileToExtension(profile.attributes.profileType)
+      core.info(`profileExtension : ${profileExtension}`)
       const profileFilename = `${profile.attributes.uuid}.${profileExtension}`
       const basePath = path.join(
         process.env['HOME'],
