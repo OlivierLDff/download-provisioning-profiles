@@ -3583,7 +3583,18 @@ async function run() {
             if (!(profile.attributes.uuid && profile.attributes.profileContent)) {
                 throw new Error('Profile attributes `uuid` and `profileContent` must be defined!');
             }
-            const profileFilename = `${profile.attributes.uuid}.mobileprovision`;
+              function profileToExtension(type)
+              {
+                core.info(`type : ${type}`)
+                if(type === 'MAC_APP_DEVELOPMENT' ||
+                    type === 'MAC_APP_STORE' ||
+                    type === 'MAC_APP_DIRECT')
+                {
+                  return 'provisionprofile'
+                }
+                return 'mobileprovision'
+              }
+            const profileFilename = `${profile.attributes.uuid}.${profileToExtension(profile.attributes.profileType)}`;
             const basePath = path.join(process.env['HOME'], '/Library/MobileDevice/Provisioning Profiles');
             await io.mkdirP(basePath);
             const buffer = Buffer.from(profile.attributes.profileContent, 'base64');
